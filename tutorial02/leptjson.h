@@ -1,19 +1,28 @@
 #ifndef LEPTJSON_H__
 #define LEPTJSON_H__
 
-typedef enum { LEPT_NULL, LEPT_FALSE, LEPT_TRUE, LEPT_NUMBER, LEPT_STRING, LEPT_ARRAY, LEPT_OBJECT } lept_type;
+typedef enum {
+  LEPT_NULL,
+  LEPT_FALSE,
+  LEPT_TRUE,
+  LEPT_NUMBER,
+  LEPT_STRING,
+  LEPT_ARRAY,
+  LEPT_OBJECT
+} lept_type;
 
 typedef struct {
-    double n;
-    lept_type type;
-}lept_value;
+  // 数值（当类型为数值时）
+  double n;
+  lept_type type;
+} lept_value;
 
 enum {
-    LEPT_PARSE_OK = 0,
-    LEPT_PARSE_EXPECT_VALUE,
-    LEPT_PARSE_INVALID_VALUE,
-    LEPT_PARSE_ROOT_NOT_SINGULAR,
-    LEPT_PARSE_NUMBER_TOO_BIG
+  LEPT_PARSE_OK,                // 解析成功
+  LEPT_PARSE_EXPECT_VALUE,      // 解析目标为空
+  LEPT_PARSE_INVALID_VALUE,     // 解析目标类型非法
+  LEPT_PARSE_ROOT_NOT_SINGULAR, // 解析目标成功之后，空白之后还有值，如 {"a": 114514 1919}
+  LEPT_PARSE_NUMBER_TOO_BIG     // 数值解析溢出
 };
 
 int lept_parse(lept_value* v, const char* json);

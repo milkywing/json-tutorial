@@ -71,7 +71,7 @@ int lept_parse(lept_value* v, const char* json) {
   c.json = json;
   v->type = LEPT_NULL;
   lept_parse_whitespace(&c);
-  // 如果目标前缀解析成功，还需要检查其之后的除了空白是否还存在其他内容，如果存在，则本次解析失败
+  // 即使目标前缀解析成功，也要检查其之后是否存在非空白内容，如果存在，则本次解析失败
   uint8_t res = lept_parse_value(&c, v);
   if (res == LEPT_PARSE_OK) {
     lept_parse_whitespace(&c);
