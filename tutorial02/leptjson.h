@@ -12,7 +12,7 @@ typedef enum {
 } lept_type;
 
 typedef struct {
-  // 数值（当类型为数值时）
+  // 数值
   double n;
   lept_type type;
 } lept_value;
