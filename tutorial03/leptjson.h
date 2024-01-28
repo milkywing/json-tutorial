@@ -15,13 +15,11 @@ typedef enum {
 
 typedef struct {
   union {
-    // 字符串
     struct {
       char* s;
       size_t len;
-    } s;
-    // 数值
-    double n;
+    } s;      // 字符串
+    double n; // 数值
   } u;
   lept_type type;
 } lept_value;

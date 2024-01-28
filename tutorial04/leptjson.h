@@ -3,30 +3,44 @@
 
 #include <stddef.h> /* size_t */
 
-typedef enum { LEPT_NULL, LEPT_FALSE, LEPT_TRUE, LEPT_NUMBER, LEPT_STRING, LEPT_ARRAY, LEPT_OBJECT } lept_type;
+typedef enum {
+  LEPT_NULL,
+  LEPT_FALSE,
+  LEPT_TRUE,
+  LEPT_NUMBER,
+  LEPT_STRING,
+  LEPT_ARRAY,
+  LEPT_OBJECT
+} lept_type;
 
 typedef struct {
-    union {
-        struct { char* s; size_t len; }s;  /* string: null-terminated string, string length */
-        double n;                          /* number */
-    }u;
-    lept_type type;
-}lept_value;
+  union {
+    struct {
+      char* s;
+      size_t len;
+    } s;      // 字符串
+    double n; // 数值
+  } u;
+  lept_type type;
+} lept_value;
 
 enum {
-    LEPT_PARSE_OK = 0,
-    LEPT_PARSE_EXPECT_VALUE,
-    LEPT_PARSE_INVALID_VALUE,
-    LEPT_PARSE_ROOT_NOT_SINGULAR,
-    LEPT_PARSE_NUMBER_TOO_BIG,
-    LEPT_PARSE_MISS_QUOTATION_MARK,
-    LEPT_PARSE_INVALID_STRING_ESCAPE,
-    LEPT_PARSE_INVALID_STRING_CHAR,
-    LEPT_PARSE_INVALID_UNICODE_HEX,
-    LEPT_PARSE_INVALID_UNICODE_SURROGATE
+  LEPT_PARSE_OK,                    // 解析成功
+  LEPT_PARSE_EXPECT_VALUE,          // 解析目标为空
+  LEPT_PARSE_INVALID_VALUE,         // 解析目标类型非法
+  LEPT_PARSE_ROOT_NOT_SINGULAR,     // 解析目标成功之后，空白之后还有值，如 {"a": 114514 1919}
+  LEPT_PARSE_NUMBER_TOO_BIG,        // 数值解析溢出
+  LEPT_PARSE_MISS_QUOTATION_MARK,   // 字符串缺失引号
+  LEPT_PARSE_INVALID_STRING_ESCAPE, // 字符串非法转义
+  LEPT_PARSE_INVALID_STRING_CHAR,   // 非法字符，比如码点为 0x0 ~ 0x1f 的不可见字符
+  LEPT_PARSE_INVALID_UNICODE_HEX,   // 代理项后没有后接4位十六进制数
+  LEPT_PARSE_INVALID_UNICODE_SURROGATE // 非法代理对（只存在高代理缺失低代理/低代理码点范围非法）
 };
 
-#define lept_init(v) do { (v)->type = LEPT_NULL; } while(0)
+#define lept_init(v)       \
+  do {                     \
+    (v)->type = LEPT_NULL; \
+  } while (0)
 
 int lept_parse(lept_value* v, const char* json);
 
